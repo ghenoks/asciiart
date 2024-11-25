@@ -1,0 +1,3 @@
+package Loader
+
+trait Loader

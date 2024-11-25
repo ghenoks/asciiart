@@ -1,0 +1,3 @@
+package Filter
+
+class ScaleFilter

@@ -1,0 +1,3 @@
+package Converter
+
+trait Converter

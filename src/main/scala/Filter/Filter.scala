@@ -1,0 +1,3 @@
+package Filter
+
+trait Filter
