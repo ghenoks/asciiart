@@ -1,3 +1,5 @@
 package Models.Pixel
 
-class GreyScalePixel
+case class GreyScalePixel (private val value: Int) extends Pixel {
+  def getValue: Int = value
+}
