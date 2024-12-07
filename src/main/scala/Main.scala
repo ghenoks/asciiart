@@ -12,6 +12,7 @@ import javax.imageio.ImageIO
   println(s"Width: ${image.getWidth}")
   println(s"Height: ${image.getHeight}")
   println(s"Image Type: ${image.getType}")
+
   // load image
   // resize image
   // convert to grayscale

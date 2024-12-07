@@ -1,3 +1,4 @@
 package Loader
 
-class FileImageLoader
+abstract class FileImageLoader (val fileName: String) extends ImageLoader {
+}

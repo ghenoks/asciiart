@@ -1,3 +1,5 @@
 package Loader
 
-trait Loader
+trait Loader[T] {
+  def load() : T
+}
