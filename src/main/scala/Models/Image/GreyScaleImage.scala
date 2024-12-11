@@ -2,6 +2,8 @@ package Models.Image
 
 import Models.Pixel.GreyScalePixel
 
-class GreyScaleImage (private val height: Int, private val width: Int, private val pixels: Vector[Vector[GreyScalePixel]]) {
-  
+case class GreyScaleImage (pixels: Vector[Vector[GreyScalePixel]]) extends Image {
+  override def getPixel(x: Int, y: Int): GreyScalePixel = {
+    pixels(x)(y)
+  }
 }

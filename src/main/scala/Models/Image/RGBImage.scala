@@ -1,7 +1,9 @@
 package Models.Image
 
-import Models.Pixel.RGBPixel
+import Models.Pixel.{Pixel, RGBPixel}
 
-class RGBImage (private val height: Int, private val width: Int, private val pixels: Vector[Vector[RGBPixel]]) {
-
+case class RGBImage (pixels: Vector[Vector[RGBPixel]]) extends Image {
+  override def getPixel(x: Int, y: Int): RGBPixel = {
+    pixels (x)(y)
+  }
 }

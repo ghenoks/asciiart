@@ -2,6 +2,8 @@ package Models.Image
 
 import Models.Pixel.ASCIIPixel
 
-class ASCIIImage (private val height: Int, private val width: Int, private val pixels: Vector[Vector[ASCIIPixel]]) {
-
+case class ASCIIImage (pixels: Vector[Vector[ASCIIPixel]]) extends Image {
+  override def getPixel(x: Int, y: Int): ASCIIPixel = {
+    pixels(x)(y)
+  }
 }

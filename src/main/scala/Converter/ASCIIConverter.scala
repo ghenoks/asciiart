@@ -1,3 +1,7 @@
 package Converter
 
-class ASCIIConverter
+import Models.Image.{ASCIIImage, Image}
+
+trait ASCIIConverter extends Converter[Image, ASCIIImage] {
+
+}

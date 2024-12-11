@@ -7,3 +7,4 @@ case class RGBPixel  (private val red: Int, private val green: Int, private val 
 
   def getBlue: Int = blue
 }
+

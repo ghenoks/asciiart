@@ -1,3 +1,0 @@
-package Loader
-
-class RandomImageLoader
