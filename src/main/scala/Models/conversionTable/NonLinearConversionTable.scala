@@ -1,0 +1,20 @@
+package Models.conversionTable
+
+import Models.Pixel.GreyScalePixel
+
+case class NonLinearConversionTable(val table: String) extends ConversionTable[GreyScalePixel] {
+
+  private def interval: Int = if (table.length > 1) (255 - 100) / (table.length - 1) else 1
+  override def getSymbol(value: GreyScalePixel): Char = {
+
+    val greyValue = value.getValue
+
+    if (greyValue <= 100) {
+      table.charAt(0)
+    }
+    else {
+      val index = (greyValue - 101) / interval + 1
+      table.charAt(index)
+    }
+  }
+}

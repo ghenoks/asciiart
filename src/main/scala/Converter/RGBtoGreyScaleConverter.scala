@@ -22,7 +22,7 @@ class RGBtoGreyScaleConverter extends GreyScaleConverter[RGBImage] {
         val green = rgbPixel.getGreen
         val blue = rgbPixel.getBlue
 
-        val value = (0.3 * red) + (0.59 * green) + (0.11 * blue)
+        val value: Int = ((0.3 * red) + (0.59 * green) + (0.11 * blue)).toInt
         pixelLine.addOne(GreyScalePixel(value))
       }
       pixels.addOne(pixelLine)
