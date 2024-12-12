@@ -5,55 +5,30 @@ import Models.Pixel.GreyScalePixel
 
 class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] {
   override def applyFilter(image: GreyScaleImage): GreyScaleImage = {
-
     degrees match {
-      case 90 => rotate90(image)
-      case 180 => rotate180(image)
-      case 270 => rotate270(image)
+      case 90 => rotate(image, (x, y, width, height) => (y, height - 1 - x))
+      case 180 => rotate(image, (x, y, width, height) => (height - 1 - x, width - 1 - y))
+      case 270 => rotate(image, (x, y, width, height) => (width - 1 - y, x))
+      case _ => throw new IllegalArgumentException(s"Unsupported rotation angle: $degrees")
     }
   }
 
-  private def rotate90(image: GreyScaleImage): GreyScaleImage = {
+  private def rotate(image: GreyScaleImage, transform: (Int, Int, Int, Int) => (Int, Int)): GreyScaleImage = {
     val height = image.getHeight
     val width = image.getWidth
-    val pixels = Array.ofDim[GreyScalePixel](width, height)
+
+    val (newHeight, newWidth) = degrees match {
+      case 90 | 270 => (width, height)
+      case 180 => (height, width)
+    }
+
+    val pixels = Array.ofDim[GreyScalePixel](newHeight, newWidth)
 
     for (x <- 0 until height) {
       for (y <- 0 until width) {
         val pixel = image.getPixel(x, y)
-        pixels(y)(height - 1 - x) = GreyScalePixel(pixel.getValue)
-      }
-    }
-
-    val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(vector)
-  }
-
-  private def rotate180(image: GreyScaleImage): GreyScaleImage = {
-    val height = image.getHeight
-    val width = image.getWidth
-    val pixels = Array.ofDim[GreyScalePixel](height, width)
-
-    for (x <- 0 until height) {
-      for (y <- 0 until width) {
-        val pixel = image.getPixel(x, y)
-        pixels(height - 1 - x)(width - 1 - y) = GreyScalePixel(pixel.getValue)
-      }
-    }
-
-    val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(vector)
-  }
-
-  private def rotate270(image: GreyScaleImage): GreyScaleImage = {
-    val height = image.getHeight
-    val width = image.getWidth
-    val pixels = Array.ofDim[GreyScalePixel](width, height)
-
-    for (x <- 0 until height) {
-      for (y <- 0 until width) {
-        val pixel = image.getPixel(x, y)
-        pixels(width - 1 - y)(x) = GreyScalePixel(pixel.getValue)
+        val (newX, newY) = transform(x, y, width, height)
+        pixels(newX)(newY) = GreyScalePixel(pixel.getValue)
       }
     }
 

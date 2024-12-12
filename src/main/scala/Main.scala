@@ -2,7 +2,7 @@ package Main
 
 import java.io.*
 import Converter.{GreyScaleToASCIIConverter, RGBtoGreyScaleConverter}
-import Filter.{FlipImageFilter, InversionFilter, RotationFilter}
+import Filter.{BrightnessFilter, FlipImageFilter, InversionFilter, RotationFilter, ScaleFilter}
 import Loader.MyFileImageLoader
 import Models.conversionTable.PaulBorkeTable
 
@@ -31,21 +31,32 @@ import javax.imageio.ImageIO
   //greyImage.print()
 
   // invert
-  //val invertFilter = InversionFilter()
-  //val invertedImage = invertFilter.applyFilter(greyImage)
+  val invertFilter = InversionFilter()
+  val invertedImage = invertFilter.applyFilter(greyImage)
 
   // flip
   //val flipFilter = FlipImageFilter('x')
   //val flippedImage = flipFilter.applyFilter(invertedImage)
 
   // rotate
-  val rotateFilter = RotationFilter(180)
-  val rotatedImage = rotateFilter.applyFilter(greyImage)
+  //val rotateFilter = RotationFilter(270)
+  //val rotatedImage = rotateFilter.applyFilter(greyImage)
+
+  // brightness
+  //val brightFilter = BrightnessFilter(100)
+  //val brigthImage = brightFilter.applyFilter(invertedImage)
+
+  // scale
+  val scaleFilter = ScaleFilter(0.25)
+  val scaledImage = scaleFilter.applyFilter(greyImage)
 
   // generate ASCII art
   val asciiConverter = GreyScaleToASCIIConverter(new PaulBorkeTable)
   //val asciiImage = asciiConverter.convert(flippedImage)
-  val asciiImage = asciiConverter.convert(rotatedImage)
+  //val asciiImage = asciiConverter.convert(brigthImage)
+  //val asciiImage = asciiConverter.convert(invertedImage)
+  val asciiImage = asciiConverter.convert(scaledImage)
+  //val asciiImage = asciiConverter.convert(greyImage)
 
   // to string
   val result = asciiImage.toASCIIString
