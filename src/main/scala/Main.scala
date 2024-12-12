@@ -1,8 +1,8 @@
 package Main
 
-import java.io._
-
+import java.io.*
 import Converter.{GreyScaleToASCIIConverter, RGBtoGreyScaleConverter}
+import Filter.{FlipImageFilter, InversionFilter, RotationFilter}
 import Loader.MyFileImageLoader
 import Models.conversionTable.PaulBorkeTable
 
@@ -16,30 +16,41 @@ import javax.imageio.ImageIO
 
   val image: BufferedImage = ImageIO.read(new File(file))
   if (image == null) {
-    println("Couldnt load")
+    println("Couldn't load")
     return
   }
-  //println(s"Width: ${image.getWidth}")
-  //println(s"Height: ${image.getHeight}")
-  //println(s"Image Type: ${image.getType}")
 
   // load image
   val loader = MyFileImageLoader(file)
   val rgbImage = loader.load()
   //rgbImage.print()
-  
+
   // convert to grayscale
   val greyConverter = RGBtoGreyScaleConverter()
   val greyImage = greyConverter.convert(rgbImage)
   //greyImage.print()
 
-  // map grayscale values to ASCII characters
-  // generate ASCII art
+  // invert
+  //val invertFilter = InversionFilter()
+  //val invertedImage = invertFilter.applyFilter(greyImage)
 
+  // flip
+  //val flipFilter = FlipImageFilter('x')
+  //val flippedImage = flipFilter.applyFilter(invertedImage)
+
+  // rotate
+  val rotateFilter = RotationFilter(180)
+  val rotatedImage = rotateFilter.applyFilter(greyImage)
+
+  // generate ASCII art
   val asciiConverter = GreyScaleToASCIIConverter(new PaulBorkeTable)
-  val asciiImage = asciiConverter.convert(greyImage)
+  //val asciiImage = asciiConverter.convert(flippedImage)
+  val asciiImage = asciiConverter.convert(rotatedImage)
+
+  // to string
   val result = asciiImage.toASCIIString
 
+  // to file
   val filePath = "src/main/scala/Resources/result.txt"
 
   val fileWriter = new FileWriter(filePath)

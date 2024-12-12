@@ -11,6 +11,6 @@ class LinearConversionTable (val table: String) extends ConversionTable[GreyScal
     if (index >= 0 && index < table.length) {
       table.charAt(index)
     }
-    else table.charAt(0)
+    else table.charAt(table.length - 1)
   }
 }

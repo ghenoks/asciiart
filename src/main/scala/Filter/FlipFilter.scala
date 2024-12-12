@@ -1,3 +1,0 @@
-package Filter
-
-class FlipFilter
