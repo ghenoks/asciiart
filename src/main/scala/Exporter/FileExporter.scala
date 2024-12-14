@@ -1,3 +1,0 @@
-package Exporter
-
-class FileExporter
