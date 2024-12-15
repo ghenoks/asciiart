@@ -1,3 +1,7 @@
 package UI
 
-class ConsoleController
+import UI.Controller
+
+class ConsoleController extends Controller {
+
+}

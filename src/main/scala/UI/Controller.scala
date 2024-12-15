@@ -1,3 +1,7 @@
 package UI
 
-trait Controller
+trait Controller {
+  //def importImage(): Unit
+  //def exportImageToFile(): Unit
+  //def exportImageToConsole(): Unit
+}

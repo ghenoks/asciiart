@@ -72,4 +72,11 @@ import javax.imageio.ImageIO
   // refactor for error handling
   // tests
   // we did it lets go
+
+  // create controller
+  // create view
+  // controller.run()
+
+  // argument parser vrati --command + doplnek
+  // module getter vrati moduleHolder (nova trida)
 }

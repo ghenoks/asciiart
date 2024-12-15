@@ -1,3 +1,5 @@
 package UI
 
-class ConsoleView
+import UI.View
+
+class ConsoleView extends View {}
