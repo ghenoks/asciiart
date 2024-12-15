@@ -2,9 +2,11 @@ package Main
 
 import java.io.*
 import Converter.{GreyScaleToASCIIConverter, RGBtoGreyScaleConverter}
+import Exporter.{ASCIIImageExporter, FileOutputExporter, StdOutputExporter}
 import Filter.{BrightnessFilter, FlipImageFilter, InversionFilter, RotationFilter, ScaleFilter}
 import Loader.MyFileImageLoader
 import Models.conversionTable.PaulBorkeTable
+import UI.ImageToStringVisitor
 
 import java.awt.image.BufferedImage
 import java.io.File
@@ -13,12 +15,6 @@ import javax.imageio.ImageIO
 @main def main (args: String*): Unit = {
   println("Hello there")
   val file = args(0)
-
-  val image: BufferedImage = ImageIO.read(new File(file))
-  if (image == null) {
-    println("Couldn't load")
-    return
-  }
 
   // load image
   val loader = MyFileImageLoader(file)
@@ -30,6 +26,7 @@ import javax.imageio.ImageIO
   val greyImage = greyConverter.convert(rgbImage)
   //greyImage.print()
 
+  // apply filters
   // invert
   val invertFilter = InversionFilter()
   val invertedImage = invertFilter.applyFilter(greyImage)
@@ -58,22 +55,19 @@ import javax.imageio.ImageIO
   val asciiImage = asciiConverter.convert(scaledImage)
   //val asciiImage = asciiConverter.convert(greyImage)
 
-  // to string
-  val result = asciiImage.toASCIIString
-
   // to file
   val filePath = "src/main/scala/Resources/result.txt"
 
-  val fileWriter = new FileWriter(filePath)
-  try {
-    fileWriter.write(result)
-  } finally {
-    fileWriter.close() // Ensure the writer is closed after writing
-  }
-
-  // resize image???
-  // apply filters
   // export
+  val fileExport = new File(filePath)
+  val fileExporter = FileOutputExporter(fileExport)
+  val consoleVisitor = new ImageToStringVisitor()
+  //val stdExporter = StdOutputExporter()
+
+  val imageExporter = ASCIIImageExporter(fileExporter, consoleVisitor)
+  //val imageExporter = ASCIIImageExporter(stdExporter, consoleVisitor)
+  imageExporter.output(asciiImage)
+
   // UI
   // refactor for error handling
   // tests

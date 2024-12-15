@@ -16,7 +16,6 @@ class InversionFilter extends ImageFilter[GreyScaleImage] {
       }
     }
 
-    println("invert")
     val vector = pixels.map(_.toVector).toVector
     GreyScaleImage(vector)
   }

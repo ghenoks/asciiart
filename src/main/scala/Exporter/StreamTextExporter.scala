@@ -14,7 +14,7 @@ class StreamTextExporter (outputStream: OutputStream) extends TextExporter {
     outputStream.flush()
   }
 
-  def close(): Unit = {
+  override def close(): Unit = {
     if (closed)
       return
 
