@@ -9,6 +9,7 @@ class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] {
       case 90 => rotate(image, (x, y, width, height) => (y, height - 1 - x))
       case 180 => rotate(image, (x, y, width, height) => (height - 1 - x, width - 1 - y))
       case 270 => rotate(image, (x, y, width, height) => (width - 1 - y, x))
+      case 0 => image
       case _ => throw new IllegalArgumentException(s"Unsupported rotation angle: $degrees")
     }
   }

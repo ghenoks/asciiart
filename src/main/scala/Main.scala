@@ -61,10 +61,10 @@ import javax.imageio.ImageIO
   // export
   val fileExport = new File(filePath)
   val fileExporter = FileOutputExporter(fileExport)
-  val consoleVisitor = new ImageToStringVisitor()
+  //val consoleVisitor = new ImageToStringVisitor()
   //val stdExporter = StdOutputExporter()
 
-  val imageExporter = ASCIIImageExporter(fileExporter, consoleVisitor)
+  val imageExporter = ASCIIImageExporter(fileExporter)
   //val imageExporter = ASCIIImageExporter(stdExporter, consoleVisitor)
   imageExporter.output(asciiImage)
 
