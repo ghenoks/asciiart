@@ -1,7 +1,0 @@
-package Exporter
-
-trait TextExporter extends Exporter[String]
-{
-  def close(): Unit = {}
-}
-

@@ -1,3 +1,0 @@
-package UI
-
-trait View
