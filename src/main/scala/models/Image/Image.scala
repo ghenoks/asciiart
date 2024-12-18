@@ -2,19 +2,18 @@ package models.Image
 
 import models.Image.visitor.ImageVisitor
 import models.Pixel.Pixel
+import models.PixelArray
 
 trait Image {
-  def pixels: Vector[Vector[Pixel]]
-  private val height: Int = pixels.length
-  private val width: Int = {
-    if (pixels.nonEmpty) pixels.head.length
-    else 0
-  }
 
+  def pixelArray: PixelArray[Pixel]
+
+  private val height: Int = pixelArray.getHeight
+  private val width: Int = pixelArray.getWidth
   def getHeight: Int = height
   def getWidth: Int = width
-  def getPixel (x: Int, y: Int): Pixel
-  def getPixels: Vector[Vector[Pixel]]
 
-  def accept[T] (visitor: ImageVisitor[T]): T
+  def getPixel(x: Int, y: Int): Pixel
+
+  def accept[T](visitor: ImageVisitor[T]): T
 }

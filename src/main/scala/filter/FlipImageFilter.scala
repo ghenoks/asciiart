@@ -2,6 +2,7 @@ package filter
 
 import models.Image.{ASCIIImage, GreyScaleImage}
 import models.Pixel.{ASCIIPixel, GreyScalePixel}
+import models.PixelArray
 
 class FlipImageFilter(val flipValue: Char) extends ImageFilter[GreyScaleImage] {
   override def applyFilter(image: GreyScaleImage): GreyScaleImage = {
@@ -23,8 +24,8 @@ class FlipImageFilter(val flipValue: Char) extends ImageFilter[GreyScaleImage] {
         pixels(height - 1 - x)(y) = GreyScalePixel(pixel.getValue)
       }
     }
-    val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(vector)
+    //val vector = pixels.map(_.toVector).toVector
+    GreyScaleImage(PixelArray[GreyScalePixel](pixels))
   }
 
   private def flipVertical(image: GreyScaleImage): GreyScaleImage = {
@@ -39,7 +40,7 @@ class FlipImageFilter(val flipValue: Char) extends ImageFilter[GreyScaleImage] {
         pixels(x)(width - 1 - y) = GreyScalePixel(pixel.getValue)
       }
     }
-    val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(vector)
+    //val vector = pixels.map(_.toVector).toVector
+    GreyScaleImage(PixelArray[GreyScalePixel](pixels))
   }
 }

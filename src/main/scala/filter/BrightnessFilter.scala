@@ -2,6 +2,7 @@ package filter
 
 import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
+import models.PixelArray
 
 class BrightnessFilter(val value: Int) extends ImageFilter[GreyScaleImage] {
   override def applyFilter(image: GreyScaleImage): GreyScaleImage = {
@@ -23,7 +24,6 @@ class BrightnessFilter(val value: Int) extends ImageFilter[GreyScaleImage] {
       }
     }
 
-    val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(vector)
+    GreyScaleImage(PixelArray[GreyScalePixel](pixels))
   }
 }

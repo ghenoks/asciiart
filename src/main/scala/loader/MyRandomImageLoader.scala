@@ -2,6 +2,7 @@ package loader
 
 import models.Image.RGBImage
 import models.Pixel.RGBPixel
+import models.PixelArray
 
 import java.awt.image.BufferedImage
 import java.io.File
@@ -49,7 +50,7 @@ class MyRandomImageLoader extends ImageLoader {
     val vector: Vector[Vector[RGBPixel]] = pixels.toArray.map(_.toVector).toVector
     RGBImage(height, width, vector) */
 
-    val pixels = Vector[Vector[RGBPixel]] ()
-    RGBImage(pixels)
+    val pixels = Array[Array[RGBPixel]] ()
+    RGBImage(PixelArray[RGBPixel](pixels))
   }
 }

@@ -2,6 +2,7 @@ package filter
 
 import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
+import models.PixelArray
 
 class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] {
   override def applyFilter(image: GreyScaleImage): GreyScaleImage = {
@@ -33,7 +34,7 @@ class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] {
       }
     }
 
-    val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(vector)
+    //val vector = pixels.map(_.toVector).toVector
+    GreyScaleImage(PixelArray[GreyScalePixel](pixels))
   }
 }

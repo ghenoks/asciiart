@@ -1,18 +1,16 @@
 package models.Image
 
 import models.Image.visitor.ImageVisitor
-import models.Pixel.ASCIIPixel
+import models.Pixel.{ASCIIPixel, Pixel}
 import models.Image.Image
+import models.PixelArray
 
-case class ASCIIImage (pixels: Vector[Vector[ASCIIPixel]]) extends Image {
+case class ASCIIImage (pixelArray: PixelArray[ASCIIPixel]) extends Image {
   override def getPixel(x: Int, y: Int): ASCIIPixel = {
-    pixels(x)(y)
+    pixelArray.getPixel(x, y)
   }
-
-  override def getPixels: Vector[Vector[ASCIIPixel]] = pixels
 
   override def accept[T](visitor: ImageVisitor[T]): T = {
     visitor.visitASCIIImage(this)
   }
-
 }

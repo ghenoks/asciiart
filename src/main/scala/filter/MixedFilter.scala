@@ -11,7 +11,6 @@ class MixedFilter (filters: List[ImageFilter[GreyScaleImage]]) extends ImageFilt
     filters.foreach {
       filter => filteredImage = filter.applyFilter(filteredImage)
     }
-
     filteredImage
   }
 }

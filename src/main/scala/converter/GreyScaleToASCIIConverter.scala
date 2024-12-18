@@ -2,6 +2,7 @@ package converter
 
 import models.Image.{ASCIIImage, GreyScaleImage}
 import models.Pixel.{ASCIIPixel, GreyScalePixel}
+import models.PixelArray
 import models.conversionTable.ConversionTable
 
 import scala.collection.mutable.ArrayBuffer
@@ -25,7 +26,7 @@ case class GreyScaleToASCIIConverter(table: ConversionTable[GreyScalePixel]) ext
       pixels.addOne(pixelLine)
     }
 
-    val vector: Vector[Vector[ASCIIPixel]] = pixels.map(_.toVector).toVector
-    ASCIIImage(vector)
+    val arr: Array[Array[ASCIIPixel]] = pixels.map(_.toArray).toArray
+    ASCIIImage(PixelArray[ASCIIPixel](arr))
   }
 }

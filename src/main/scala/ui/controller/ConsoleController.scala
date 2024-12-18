@@ -22,7 +22,8 @@ class ConsoleController (args: List[String]) extends Controller {
         val adapterHandler = ImageToRGBHandler(greyHandler)
         val loadHandler = LoadHandler(modules.getLoader, adapterHandler)
 
-        loadHandler.handle("s")
+        loadHandler.handle("Anything")
+
       case Left(errorMessage) =>
         println(s"Error: $errorMessage")
     }

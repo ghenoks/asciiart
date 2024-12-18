@@ -2,6 +2,7 @@ package converter
 
 import models.Image.{GreyScaleImage, RGBImage}
 import models.Pixel.{GreyScalePixel, RGBPixel}
+import models.PixelArray
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -28,7 +29,7 @@ class RGBtoGreyScaleConverter extends GreyScaleConverter[RGBImage] {
       pixels.addOne(pixelLine)
     }
 
-    val vector: Vector[Vector[GreyScalePixel]] = pixels.map(_.toVector).toVector
-    GreyScaleImage(vector)
+    val arr: Array[Array[GreyScalePixel]] = pixels.map(_.toArray).toArray
+    GreyScaleImage(PixelArray[GreyScalePixel](arr))
   }
 }

@@ -2,6 +2,7 @@ package loader
 
 import models.Image.RGBImage
 import models.Pixel.RGBPixel
+import models.PixelArray
 
 import java.awt.image.BufferedImage
 import java.io.File
@@ -17,6 +18,9 @@ class MyFileImageLoader(val fileName: String) extends ImageLoader {
 
     val height: Int = image.getHeight
     val width: Int = image.getWidth
+
+    println(height)
+    println(width)
 
     val pixels = ArrayBuffer[ArrayBuffer[RGBPixel]]()
 
@@ -34,7 +38,7 @@ class MyFileImageLoader(val fileName: String) extends ImageLoader {
       pixels.addOne(pixelLine)
     }
 
-    val vector: Vector[Vector[RGBPixel]] = pixels.map(_.toVector).toVector
-    RGBImage(vector)
+    val arr: Array[Array[RGBPixel]] = pixels.map(_.toArray).toArray
+    RGBImage(PixelArray[RGBPixel](arr))
   }
 }
