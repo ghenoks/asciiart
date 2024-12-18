@@ -1,43 +1,43 @@
-package ui
+package ui.moduleGetter
 
 import converter.{ASCIIConverter, GreyScaleConverter, GreyScaleToASCIIConverter, RGBtoGreyScaleConverter}
-import exporter.{ASCIIImageExporter, Exporter, FileOutputExporter, StdOutputExporter}
-import filter.{BrightnessFilter, FlipImageFilter, ImageFilter, ImageIdentityFilter, InversionFilter, MixedFilter, RotationFilter, ScaleFilter}
-import loader.{ImageLoader, MyFileImageLoader, MyRandomImageLoader}
+import exporter.*
+import filter.*
+import loader.{ImageLoader, StdFileImageLoader, RandomImageLoader}
 import models.Image.{GreyScaleImage, Image, RGBImage}
-import models.ModuleHolder
 import models.Pixel.GreyScalePixel
-import models.conversionTable.{LinearConversionTable, PaulBorkeTable}
+import models.conversionTable.{LinearConversionTable, NonLinearPaulBourkeTable, PaulBourkeTable}
+import models.{Argument, ModuleHolder}
 
 import java.io.File
 import scala.collection.mutable.ListBuffer
 import scala.util.Try
 
-class ModuleGetter(moduleList: List[(String, Option[String])]) {
+class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHolder] {
 
-  def getModules: Either[String, ModuleHolder] = {
+  override def getModules: Either[String, ModuleHolder] = {
     for {
       loader <- getLoader.left.map(error => s"Loader error: $error")
       greyScaleConverter <- getGreyScaleConverter.left.map(error => s"GreyScaleConverter error: $error")
       filter <- getFilters.left.map(error => s"Filter error: $error")
       asciiConverter <- getASCIIConverter.left.map(error => s"ASCIIConverter error: $error")
-      exporters <- getExporter.left.map(error => s"Exporter error: $error")
-    } yield new ModuleHolder(loader, greyScaleConverter, filter, asciiConverter, exporters)
+      exporter <- getExporter.left.map(error => s"Exporter error: $error")
+    } yield new ModuleHolder(loader, greyScaleConverter, filter, asciiConverter, exporter)
   }
 
   private def getLoader: Either[String, ImageLoader] = {
-    val imageCommands: Seq[(String, Option[String])] = moduleList.filter(arg => arg._1 == "image" || arg._1 == "image-random")
+    val imageCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "image" || arg.name == "image-random")
 
     if (imageCommands.isEmpty) Left("No image command specified")
     else if (imageCommands.length > 1) Left("Multiple image commands specified. Please specify only one image command.")
     else {
       val imageCommand = imageCommands.head
-      imageCommand._1 match {
+      imageCommand.name match {
         case "image" =>
-          imageCommand._2 match {
+          imageCommand.value match {
             case Some(imagePath) =>
               if (imagePath.endsWith(".jpg") || imagePath.endsWith(".png")) {
-                Right(MyFileImageLoader(imagePath))
+                Right(StdFileImageLoader(imagePath))
               } else {
                 Left("Unsupported image format. Please use JPG or PNG file.")
               }
@@ -45,7 +45,7 @@ class ModuleGetter(moduleList: List[(String, Option[String])]) {
               Left("No image path provided for 'image' command.")
           }
         case "image-random" =>
-          Right(MyRandomImageLoader())
+          Right(RandomImageLoader())
         case _ =>
           Left("Unknown image command.")
       }
@@ -58,23 +58,23 @@ class ModuleGetter(moduleList: List[(String, Option[String])]) {
 
   private def getFilters: Either[String, ImageFilter[GreyScaleImage]] = {
     val imageFilters = ListBuffer[ImageFilter[GreyScaleImage]]()
-    val filterCommands: Seq[(String, Option[String])] = moduleList.filter(arg => arg._1 == "scale" || arg._1 == "invert" || arg._1 == "rotate" || arg._1 == "brightness" || arg._1 == "flip")
+    val filterCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "scale" || arg.name == "invert" || arg.name == "rotate" || arg.name == "brightness" || arg.name == "flip")
 
     if (filterCommands.isEmpty) {
-      return Right(ImageIdentityFilter())
+      return Right(GSImageIdentityFilter())
     }
 
     var error: Option[String] = None
 
     for (command <- filterCommands if error.isEmpty) {
       command match {
-        case ("invert", None) => imageFilters += InversionFilter()
-        case ("invert", Some(value)) =>
+        case Argument("invert", None) => imageFilters += InversionFilter()
+        case Argument("invert", Some(value)) =>
           error = Some("Argument specified after inversion filter")
 
-        case ("rotate", None) =>
+        case Argument("rotate", None) =>
           error = Some("Rotation filter without argument")
-        case ("rotate", Some(value)) =>
+        case Argument("rotate", Some(value)) =>
           value match {
             case "90" | "+90" | "-270" => imageFilters += RotationFilter(90)
             case "180" | "+180" | "-180" => imageFilters += RotationFilter(180)
@@ -83,27 +83,27 @@ class ModuleGetter(moduleList: List[(String, Option[String])]) {
             case _ => error = Some("Invalid rotate argument")
           }
 
-        case ("brightness", None) =>
+        case Argument("brightness", None) =>
           error = Some("Brightness filter without argument")
-        case ("brightness", Some(value)) =>
+        case Argument("brightness", Some(value)) =>
           if (value.matches("[+-]?\\d+")) {
             imageFilters += BrightnessFilter(value.toInt)
           } else {
             error = Some(s"Invalid brightness value: $value. Expected an integer.")
           }
 
-        case ("flip", None) =>
+        case Argument("flip", None) =>
           error = Some("Flip filter without argument")
-        case ("flip", Some(value)) =>
+        case Argument("flip", Some(value)) =>
           value match {
             case "x" => imageFilters += FlipImageFilter('x')
             case "y" => imageFilters += FlipImageFilter('y')
             case _ => error = Some("Flip filter invalid argument")
           }
 
-        case ("scale", None) =>
+        case Argument("scale", None) =>
           error = Some("Scale filter without argument")
-        case ("scale", Some(value)) =>
+        case Argument("scale", Some(value)) =>
           if (Try(value.toFloat).isSuccess) imageFilters += ScaleFilter(value.toFloat)
           else error = Some(s"Invalid scale value: $value. Expected a float.")
 
@@ -114,27 +114,28 @@ class ModuleGetter(moduleList: List[(String, Option[String])]) {
     error match {
       case Some(errMsg) => Left(errMsg)
       case None =>
-        if (imageFilters.isEmpty) Right(ImageIdentityFilter())
+        if (imageFilters.isEmpty) Right(GSImageIdentityFilter())
         else if (imageFilters.length == 1) Right(imageFilters.head)
         else Right(MixedFilter(imageFilters.toList))
     }
   }
 
   private def getASCIIConverter: Either[String, ASCIIConverter[GreyScaleImage, GreyScalePixel]] = {
-    val tableCommands: Seq[(String, Option[String])] = moduleList.filter(arg => arg._1 == "table" || arg._1 == "custom-table")
+    val tableCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "table" || arg.name == "custom-table")
 
     if (tableCommands.length > 1) Left("Multiple table commands specified. Please specify only one table command.")
-    else if (tableCommands.isEmpty) Right(GreyScaleToASCIIConverter(PaulBorkeTable()))
+    else if (tableCommands.isEmpty) Right(GreyScaleToASCIIConverter(PaulBourkeTable()))
     else {
       val tableCommand = tableCommands.head
-      tableCommand._1 match {
+      tableCommand.name match {
         case "table" =>
-          tableCommand._2 match {
-            case Some("paulbourke") => Right(GreyScaleToASCIIConverter(PaulBorkeTable()))
+          tableCommand.value match {
+            case Some("paulbourke") => Right(GreyScaleToASCIIConverter(PaulBourkeTable()))
+            case Some("nonlinear-paulbourke") => Right(GreyScaleToASCIIConverter(NonLinearPaulBourkeTable()))
             case _ => Left("Missing table info")
           }
         case "custom-table" =>
-          tableCommand._2 match {
+          tableCommand.value match {
             case Some(value) => Right(GreyScaleToASCIIConverter(LinearConversionTable(value)))
             case _ => Left("Missing table info")
           }
@@ -142,9 +143,9 @@ class ModuleGetter(moduleList: List[(String, Option[String])]) {
     }
   }
 
-  private def getExporter: Either[String, List[Exporter[Image]]] = {
+  private def getExporter: Either[String, Exporter[Image]] = {
     val imageExporters = ListBuffer[Exporter[Image]]()
-    val exportCommands: Seq[(String, Option[String])] = moduleList.filter(arg => arg._1 == "output-console" || arg._1 == "output-file")
+    val exportCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "output-console" || arg.name == "output-file")
 
     if (exportCommands.isEmpty) {
       return Left("No output command specified")
@@ -154,11 +155,11 @@ class ModuleGetter(moduleList: List[(String, Option[String])]) {
 
     for (command <- exportCommands if error.isEmpty) {
       command match {
-        case ("output-console", _) =>
-          imageExporters += ASCIIImageExporter(StdOutputExporter())
-        case ("output-file", Some(filePath)) =>
-          imageExporters += ASCIIImageExporter(FileOutputExporter(new File(filePath)))
-        case ("output-file", None) =>
+        case Argument("output-console", _) =>
+          imageExporters += ImageExporter(StdOutputExporter())
+        case Argument("output-file", Some(filePath)) =>
+          imageExporters += ImageExporter(FileOutputExporter(new File(filePath)))
+        case Argument("output-file", None) =>
           error = Some("Output file command specified without a file path")
         case _ =>
           error = Some("Missing output command")
@@ -167,7 +168,9 @@ class ModuleGetter(moduleList: List[(String, Option[String])]) {
 
     error match {
       case Some(errMsg) => Left(errMsg)
-      case None => Right(imageExporters.toList)
+      case None =>
+        if (imageExporters.length == 1) Right(imageExporters.head)
+        else Right(MixedImageExporter(imageExporters.toList))
     }
   }
 }

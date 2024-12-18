@@ -9,7 +9,7 @@ import java.io.File
 import javax.imageio.ImageIO
 import scala.collection.mutable.ArrayBuffer
 
-class MyFileImageLoader(val fileName: String) extends ImageLoader {
+class StdFileImageLoader(val fileName: String) extends ImageLoader {
   override def load(): RGBImage = {
 
     val image: BufferedImage = ImageIO.read(new File(fileName))
@@ -38,7 +38,7 @@ class MyFileImageLoader(val fileName: String) extends ImageLoader {
       pixels.addOne(pixelLine)
     }
 
-    val arr: Array[Array[RGBPixel]] = pixels.map(_.toArray).toArray
-    RGBImage(PixelArray[RGBPixel](arr))
+    val vector: Vector[Vector[RGBPixel]] = pixels.map(_.toVector).toVector
+    RGBImage(PixelArray[RGBPixel](vector))
   }
 }

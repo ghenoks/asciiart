@@ -17,7 +17,7 @@ class InversionFilter extends ImageFilter[GreyScaleImage] {
       }
     }
 
-    //val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(PixelArray[GreyScalePixel](pixels))
+    val vector = pixels.map(_.toVector).toVector
+    GreyScaleImage(PixelArray[GreyScalePixel](vector))
   }
 }

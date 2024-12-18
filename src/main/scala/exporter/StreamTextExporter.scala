@@ -5,7 +5,7 @@ import java.io.OutputStream
 class StreamTextExporter (outputStream: OutputStream) extends TextExporter {
   private var closed = false
 
-  protected def exportToStream(text: String): Unit = {
+  private def exportToStream(text: String): Unit = {
 
     if (closed)
       throw new Exception("The stream is already closed")

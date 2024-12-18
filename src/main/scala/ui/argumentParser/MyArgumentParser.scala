@@ -1,19 +1,22 @@
-package ui
+package ui.argumentParser
+
+import models.Argument
+import ui.argumentParser.ArgumentParser
 
 import scala.collection.mutable.ListBuffer
 
-class ArgumentParser (args: List[String]) {
+class MyArgumentParser(args: List[String]) extends ArgumentParser {
 
-  def parseArgs(): Either[String, List[(String, Option[String])]] = {
+  override def parseArgs(): Either[String, List[Argument]] = {
     var parameter = ""
-    val arguments = new ListBuffer[(String, Option[String])]()
+    val arguments = new ListBuffer[Argument]()
 
     var error: Option[String] = None
 
     args.foreach (command => {
       if (command.startsWith("--")) {
         if (parameter.nonEmpty) {
-          arguments += ((parameter, None))
+          arguments += Argument(parameter, None)
           parameter = ""
         }
         parameter = command.substring(2)
@@ -21,7 +24,7 @@ class ArgumentParser (args: List[String]) {
 
       else {
         if (parameter.nonEmpty) {
-          arguments += ((parameter, Some(command)))
+          arguments += Argument(parameter, Some(command))
           parameter = ""
         }
         else {
@@ -31,7 +34,7 @@ class ArgumentParser (args: List[String]) {
     })
 
     if (parameter.nonEmpty) {
-      arguments += ((parameter, None))
+      arguments += Argument(parameter, None)
     }
 
     error match {

@@ -2,7 +2,7 @@ package models
 
 import models.Pixel.Pixel
 
-class PixelArray[+T <: Pixel] (pixels: Array[Array[T]]) {
+class PixelArray[+T <: Pixel] (private val pixels: Vector[Vector[T]]) {
 
   private val height: Int = pixels.length
   private val width: Int = if (pixels.nonEmpty) pixels.head.length else 0

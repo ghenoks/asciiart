@@ -1,7 +1,7 @@
 package models.Image
 
 import models.Image.visitor.ImageVisitor
-import models.Pixel.{Pixel, RGBPixel}
+import models.Pixel.RGBPixel
 import models.PixelArray
 
 case class RGBImage (pixelArray: PixelArray[RGBPixel]) extends Image {

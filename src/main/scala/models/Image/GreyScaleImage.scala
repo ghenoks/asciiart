@@ -1,7 +1,7 @@
 package models.Image
 
 import models.Image.visitor.ImageVisitor
-import models.Pixel.{GreyScalePixel, Pixel}
+import models.Pixel.GreyScalePixel
 import models.PixelArray
 
 case class GreyScaleImage (pixelArray: PixelArray[GreyScalePixel]) extends Image {

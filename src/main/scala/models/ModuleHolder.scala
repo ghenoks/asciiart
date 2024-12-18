@@ -11,10 +11,10 @@ class ModuleHolder (loader: ImageLoader,
                     greyScaleConverter: GreyScaleConverter[RGBImage],
                     filter: ImageFilter[GreyScaleImage],
                     asciiConverter: ASCIIConverter[GreyScaleImage, GreyScalePixel],
-                    exporters: List[Exporter[Image]]) {
+                    exporter: Exporter[Image]) {
   def getLoader: ImageLoader = loader
   def getGrey: GreyScaleConverter[RGBImage] = greyScaleConverter
   def getFilter: ImageFilter[GreyScaleImage] = filter
   def getASCII: ASCIIConverter[GreyScaleImage, GreyScalePixel] = asciiConverter
-  def getExporters: List[Exporter[Image]] = exporters
+  def getExporter: Exporter[Image] = exporter
 }

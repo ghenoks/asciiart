@@ -24,6 +24,7 @@ class BrightnessFilter(val value: Int) extends ImageFilter[GreyScaleImage] {
       }
     }
 
-    GreyScaleImage(PixelArray[GreyScalePixel](pixels))
+    val vector = pixels.map(_.toVector).toVector
+    GreyScaleImage(PixelArray[GreyScalePixel](vector))
   }
 }

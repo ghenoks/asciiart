@@ -1,21 +1,21 @@
 package ui.controller
 
-import ui.{ArgumentParser, ModuleGetter}
+import ui.argumentParser.{ArgumentParser, MyArgumentParser}
 import ui.handler.*
+import ui.moduleGetter.MyModuleGetter
 
-class ConsoleController (args: List[String]) extends Controller {
+class ConsoleController (argParser: ArgumentParser) extends Controller {
   override def run(): Unit = {
-    val argParser = ArgumentParser(args)
 
     val result = for {
       parsedArgsList <- argParser.parseArgs()
-      moduleGetter = ModuleGetter(parsedArgsList)
+      moduleGetter = MyModuleGetter(parsedArgsList)
       modules <- moduleGetter.getModules
     } yield modules
 
     result match {
       case Right(modules) =>
-        val exportHandler = ExportHandler(modules.getExporters, EndHandler)
+        val exportHandler = ExportHandler(modules.getExporter, EndHandler)
         val asciiHandler = ASCIIHandler(modules.getASCII, exportHandler)
         val filterHandler = FilterHandler(modules.getFilter, asciiHandler)
         val greyHandler = GreyScaleHandler(modules.getGrey, filterHandler)

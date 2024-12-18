@@ -29,7 +29,7 @@ class RGBtoGreyScaleConverter extends GreyScaleConverter[RGBImage] {
       pixels.addOne(pixelLine)
     }
 
-    val arr: Array[Array[GreyScalePixel]] = pixels.map(_.toArray).toArray
-    GreyScaleImage(PixelArray[GreyScalePixel](arr))
+    val vector = pixels.map(_.toVector).toVector
+    GreyScaleImage(PixelArray[GreyScalePixel](vector))
   }
 }

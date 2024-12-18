@@ -1,8 +1,7 @@
 package models.Image
 
 import models.Image.visitor.ImageVisitor
-import models.Pixel.{ASCIIPixel, Pixel}
-import models.Image.Image
+import models.Pixel.ASCIIPixel
 import models.PixelArray
 
 case class ASCIIImage (pixelArray: PixelArray[ASCIIPixel]) extends Image {

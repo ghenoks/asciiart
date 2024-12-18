@@ -26,7 +26,7 @@ case class GreyScaleToASCIIConverter(table: ConversionTable[GreyScalePixel]) ext
       pixels.addOne(pixelLine)
     }
 
-    val arr: Array[Array[ASCIIPixel]] = pixels.map(_.toArray).toArray
-    ASCIIImage(PixelArray[ASCIIPixel](arr))
+    val vector = pixels.map(_.toVector).toVector
+    ASCIIImage(PixelArray[ASCIIPixel](vector))
   }
 }
