@@ -13,13 +13,13 @@ class NonLinearPaulBourkeTableTest extends AnyFunSuite {
       case Left(error) => fail(s"Unexpected BusinessError: ${error.message}")
     }
 
-    GreyScalePixel(100) match {
+    GreyScalePixel(99) match {
       case Right(pixel) =>
         assert(conversionTable.getSymbol(pixel) == '$')
       case Left(error) => fail(s"Unexpected BusinessError: ${error.message}")
     }
 
-    GreyScalePixel(101) match {
+    GreyScalePixel(100) match {
       case Right(pixel) =>
         assert(conversionTable.getSymbol(pixel) == '@')
       case Left(error) => fail(s"Unexpected BusinessError: ${error.message}")

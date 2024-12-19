@@ -10,9 +10,7 @@ import ui.view.ConsoleView
   val argParser = new MyArgumentParser(args.toList)
   val controller = new ConsoleController(argParser, view)
   controller.run()
-
-  // Modely -> Option[Model], companion object
-  // Business error
+  
   // zkontrolovat vsechny moduly pracuji spravne
   // komentare
   // testy

@@ -1,17 +1,20 @@
 package exporter
 
+import models.BusinessError
+
 import java.io.OutputStream
 
 class StreamTextExporter (outputStream: OutputStream) extends TextExporter {
   private var closed = false
 
-  private def exportToStream(text: String): Unit = {
+  private def exportToStream(text: String): Either[BusinessError, Unit] = {
 
     if (closed)
       throw new Exception("The stream is already closed")
 
     outputStream.write(text.getBytes("UTF-8"))
     outputStream.flush()
+    Right(())
   }
 
   override def close(): Unit = {
@@ -22,6 +25,6 @@ class StreamTextExporter (outputStream: OutputStream) extends TextExporter {
     closed = true
   }
 
-  override def output(item: String): Unit = exportToStream(item)
+  override def output(item: String): Either[BusinessError, Unit] = exportToStream(item)
 
 }

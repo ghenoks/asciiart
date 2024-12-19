@@ -11,7 +11,8 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
 
 class ModuleHolderTest extends AnyFunSuite with MockitoSugar {
-
+  
+  // Create moduleHolder to test with Test Modules only used for testing
   val loader: ImageLoader = new TestImageLoader
   val greyScaleConverter: GreyScaleConverter[RGBImage] = new TestGreyScaleConverter
   val filter: ImageFilter[GreyScaleImage] = new TestImageFilter

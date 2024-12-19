@@ -1,13 +1,13 @@
 package ui.argumentParser
 
-import models.Argument
+import models.{Argument, BusinessError}
 import ui.argumentParser.ArgumentParser
 
 import scala.collection.mutable.ListBuffer
 
 class MyArgumentParser(args: List[String]) extends ArgumentParser {
 
-  override def parseArgs(): Either[String, List[Argument]] = {
+  override def parseArgs(): Either[BusinessError, List[Argument]] = {
     var parameter = ""
     val arguments = new ListBuffer[Argument]()
 
@@ -38,7 +38,7 @@ class MyArgumentParser(args: List[String]) extends ArgumentParser {
     }
 
     error match {
-      case Some(errMsg) => Left(errMsg)
+      case Some(errMsg) => Left(BusinessError(errMsg))
       case None => Right(arguments.toList)
     }
   }

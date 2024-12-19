@@ -1,7 +1,7 @@
 package converter
 
-import models.Image.Image
+import models.BusinessError
 
-trait Converter[-S <: Image, +T <: Image] {
-  def convert(image: S): T
+trait Converter[-S, +T] {
+  def convert(image: S): Either[BusinessError, T]
 }

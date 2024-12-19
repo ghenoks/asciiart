@@ -1,7 +1,7 @@
 package ui.argumentParser
 
-import models.Argument
+import models.{Argument, BusinessError}
 
 trait ArgumentParser {
-  def parseArgs(): Either[String, List[Argument]]
+  def parseArgs(): Either[BusinessError, List[Argument]]
 }

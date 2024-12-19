@@ -16,6 +16,6 @@ class AxisTest extends AnyFunSuite {
     val unexpectedValue = "Z"
     val allValues = Axis.values.map(_.toString)
 
-    assert(!allValues.contains(unexpectedValue), s"Unexpected value found: $unexpectedValue")
+    assert(!allValues.contains(unexpectedValue))
   }
 }

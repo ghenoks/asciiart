@@ -1,6 +1,6 @@
 package ui.controller
 
-import ui.argumentParser.{ArgumentParser, MyArgumentParser}
+import ui.argumentParser.ArgumentParser
 import ui.handler.*
 import ui.moduleGetter.MyModuleGetter
 import ui.view.View
@@ -23,10 +23,13 @@ class ConsoleController (argParser: ArgumentParser, view: View) extends Controll
         val adapterHandler = ImageToRGBHandler(greyHandler)
         val loadHandler = LoadHandler(modules.getLoader, adapterHandler)
 
-        loadHandler.handle("Anything")
+        loadHandler.handle("Anything") match {
+          case Right(()) => view.showSuccessMessage()
+          case Left(error) => view.showErrorMessage(error.message)
+        }
 
       case Left(errorMessage) =>
-        println(s"Error: $errorMessage")
+        view.showErrorMessage(errorMessage.message)
     }
   }
 }

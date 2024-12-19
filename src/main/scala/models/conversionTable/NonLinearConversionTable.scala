@@ -4,16 +4,16 @@ import models.Pixel.GreyScalePixel
 
 class NonLinearConversionTable(val table: String) extends ConversionTable[GreyScalePixel] {
 
-  private def interval: Int = if (table.length > 1) (255 - 100) / (table.length - 1) else 1
+  private def interval: Int = if (table.length > 1) (256 - 100) / (table.length - 1) else 1
 
   override def getSymbol(value: GreyScalePixel): Char = {
-    if (table.isEmpty) ' '
+    if (table.isEmpty || table.length > 256) ' '
     else {
       val greyValue = value.getValue
 
-      if (greyValue <= 100) table.charAt(0)
+      if (greyValue < 100) table.charAt(0)
       else {
-        val index = (greyValue - 101) / interval + 1
+        val index = (greyValue - 100) / interval + 1
         if (index > 0 && index < table.length)
           table.charAt(index)
         else
