@@ -2,9 +2,7 @@ package models
 
 import models.Pixel.Pixel
 
-class PixelArray[+T <: Pixel] (private val pixels: Vector[Vector[T]]) {
-
-  require(pixels.isEmpty || pixels.forall(_.length == pixels.head.length), "All rows in the PixelArray must have the same number of columns")
+class PixelArray[+T <: Pixel] private (private val pixels: Vector[Vector[T]]) {
 
   private val height: Int = pixels.length
   private val width: Int = if (pixels.nonEmpty) pixels.head.length else 0
@@ -18,4 +16,14 @@ class PixelArray[+T <: Pixel] (private val pixels: Vector[Vector[T]]) {
 
   def getHeight: Int = height
   def getWidth: Int = width
+}
+
+object PixelArray {
+  def apply[T <: Pixel](pixels: Vector[Vector[T]]): Either[BusinessError, PixelArray[T]] = {
+    if (pixels.isEmpty || pixels.forall(_.length == pixels.head.length)) {
+      Right(new PixelArray[T](pixels))
+    } else {
+      Left(BusinessError("All rows in the PixelArray must have the same number of columns"))
+    }
+  }
 }

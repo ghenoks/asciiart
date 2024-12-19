@@ -2,7 +2,7 @@ package models.Image
 
 import models.Image.visitor.ImageVisitor
 import models.Pixel.Pixel
-import models.PixelArray
+import models.{BusinessError, PixelArray}
 
 trait Image {
 
@@ -13,7 +13,7 @@ trait Image {
   def getHeight: Int = height
   def getWidth: Int = width
 
-  def getPixel(x: Int, y: Int): Pixel
+  def getPixel(x: Int, y: Int): Either[BusinessError, Pixel]
 
   def accept[T](visitor: ImageVisitor[T]): T
 }

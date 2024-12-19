@@ -18,15 +18,23 @@ case class GreyScaleToASCIIConverter(table: ConversionTable[GreyScalePixel]) ext
     for (x <- 0 until height) {
       val pixelLine = ArrayBuffer[ASCIIPixel]()
       for (y <- 0 until width) {
-        val greyPixel: GreyScalePixel = image.getPixel(x, y)
-
-        val symbol = table.getSymbol(greyPixel)
-        pixelLine.addOne(ASCIIPixel(symbol))
+        image.getPixel(x, y) match {
+          case Right(pixel) =>
+            val symbol = table.getSymbol(pixel)
+            pixelLine.addOne(ASCIIPixel(symbol))
+          case Left(error) => throw IllegalArgumentException(error.message)
+        }
       }
       pixels.addOne(pixelLine)
     }
 
     val vector = pixels.map(_.toVector).toVector
-    ASCIIImage(PixelArray[ASCIIPixel](vector))
+    val pixelArray = PixelArray[ASCIIPixel](vector)
+
+    pixelArray match {
+      case Right(arr) => ASCIIImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
+
   }
 }

@@ -33,12 +33,21 @@ class StdFileImageLoader(val fileName: String) extends ImageLoader {
         val green = (color >> 8) & 0xFF
         val blue = color & 0xFF
 
-        pixelLine.addOne(RGBPixel(red, green, blue))
+        RGBPixel(red, green, blue) match {
+          case Right(pixel) => pixelLine.addOne(pixel)
+          case Left(error) => throw IllegalArgumentException(error.message)
+        }
+
       }
       pixels.addOne(pixelLine)
     }
 
     val vector: Vector[Vector[RGBPixel]] = pixels.map(_.toVector).toVector
-    RGBImage(PixelArray[RGBPixel](vector))
+    val pixelArray = PixelArray[RGBPixel](vector)
+
+    pixelArray match {
+      case Right(arr) => RGBImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
   }
 }

@@ -1,7 +1,7 @@
 package exporter
 
 import models.Image.Image
-import ui.ImageToStringVisitor
+import ui.visitor.ImageToStringVisitor
 
 class ImageExporter(textExporter: TextExporter) extends Exporter[Image] {
   override def output(item: Image): Unit = {

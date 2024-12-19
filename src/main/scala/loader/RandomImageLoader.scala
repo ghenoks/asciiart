@@ -16,10 +16,18 @@ class RandomImageLoader extends ImageLoader {
       val red = random.nextInt(256)
       val green = random.nextInt(256)
       val blue = random.nextInt(256)
-      RGBPixel(red, green, blue)
-    }
+      RGBPixel(red, green, blue) match {
+        case Right(pixel) => pixel
+        case Left(error) => throw new IllegalArgumentException(s"Failed to create pixel due to error: ${error.message}")
+      }
+    }  
 
     val vector = pixels.map(_.toVector).toVector
-    RGBImage(PixelArray[RGBPixel](vector))
+    val pixelArray = PixelArray[RGBPixel](vector)
+
+    pixelArray match {
+      case Right(arr) => RGBImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
   }
 }

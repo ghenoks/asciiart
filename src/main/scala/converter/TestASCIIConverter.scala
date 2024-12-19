@@ -9,6 +9,11 @@ case class TestASCIIConverter (table: ConversionTable[GreyScalePixel]) extends A
   override def convert(image: GreyScaleImage): ASCIIImage = {
     val pixels = Vector(Vector(ASCIIPixel('x')))
     val pixelArray = PixelArray(pixels)
-    ASCIIImage(pixelArray)
+
+    pixelArray match {
+      case Right(arr) => ASCIIImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
+
   }
 }

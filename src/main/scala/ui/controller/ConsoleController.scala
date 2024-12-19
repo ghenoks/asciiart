@@ -3,8 +3,9 @@ package ui.controller
 import ui.argumentParser.{ArgumentParser, MyArgumentParser}
 import ui.handler.*
 import ui.moduleGetter.MyModuleGetter
+import ui.view.View
 
-class ConsoleController (argParser: ArgumentParser) extends Controller {
+class ConsoleController (argParser: ArgumentParser, view: View) extends Controller {
   override def run(): Unit = {
 
     val result = for {

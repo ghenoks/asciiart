@@ -1,7 +1,7 @@
-package ui
+package ui.visitor
 
-import models.Image.{ASCIIImage, GreyScaleImage, RGBImage}
 import models.Image.visitor.ImageVisitor
+import models.Image.{ASCIIImage, GreyScaleImage, RGBImage}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -17,7 +17,10 @@ class ImageToStringVisitor extends ImageVisitor[String] {
     for (x <- 0 until height) {
       val rowArr: ArrayBuffer[Char] = ArrayBuffer[Char]()
       for (y <- 0 until width) {
-        rowArr += image.getPixel(x, y).getValue
+        image.getPixel(x, y) match {
+          case Right(pixel) => rowArr += pixel.getValue
+          case Left(error) => throw IllegalArgumentException(error.message)
+        }
       }
       arr += rowArr.mkString
     }

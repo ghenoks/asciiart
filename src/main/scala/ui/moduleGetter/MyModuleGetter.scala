@@ -3,11 +3,11 @@ package ui.moduleGetter
 import converter.{ASCIIConverter, GreyScaleConverter, GreyScaleToASCIIConverter, RGBtoGreyScaleConverter}
 import exporter.*
 import filter.*
-import loader.{ImageLoader, StdFileImageLoader, RandomImageLoader}
+import loader.{ImageLoader, RandomImageLoader, StdFileImageLoader}
 import models.Image.{GreyScaleImage, Image, RGBImage}
 import models.Pixel.GreyScalePixel
 import models.conversionTable.{LinearConversionTable, NonLinearPaulBourkeTable, PaulBourkeTable}
-import models.{Argument, ModuleHolder}
+import models.{Argument, Axis, ModuleHolder}
 
 import java.io.File
 import scala.collection.mutable.ListBuffer
@@ -96,8 +96,8 @@ class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHold
           error = Some("Flip filter without argument")
         case Argument("flip", Some(value)) =>
           value match {
-            case "x" => imageFilters += FlipImageFilter('x')
-            case "y" => imageFilters += FlipImageFilter('y')
+            case "x" => imageFilters += FlipImageFilter(Axis.X)
+            case "y" => imageFilters += FlipImageFilter(Axis.Y)
             case _ => error = Some("Flip filter invalid argument")
           }
 

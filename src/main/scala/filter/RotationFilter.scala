@@ -28,13 +28,25 @@ class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] {
 
     for (x <- 0 until height) {
       for (y <- 0 until width) {
-        val pixel = image.getPixel(x, y)
-        val (newX, newY) = transform(x, y, width, height)
-        pixels(newX)(newY) = GreyScalePixel(pixel.getValue)
+        image.getPixel(x, y) match {
+          case Right(pixel) =>
+            val (newX, newY) = transform(x, y, width, height)
+
+            GreyScalePixel(pixel.getValue) match {
+              case Right(tmpPixel) => pixels(newX)(newY) = tmpPixel
+              case Left(error) => throw IllegalArgumentException(error.message)
+            }
+          case Left(error) => throw IllegalArgumentException(error.message)
+        }
       }
     }
 
     val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(PixelArray[GreyScalePixel](vector))
+    val pixelArray = PixelArray[GreyScalePixel](vector)
+
+    pixelArray match {
+      case Right(arr) => GreyScaleImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
   }
 }

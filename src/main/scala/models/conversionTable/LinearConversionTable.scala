@@ -4,13 +4,13 @@ import models.Pixel.GreyScalePixel
 
 class LinearConversionTable (val table: String) extends ConversionTable[GreyScalePixel] {
 
-  private def interval: Int = 255/table.length
-  override def getSymbol(value: GreyScalePixel): Char = {
+  private def interval: Double = if (table.nonEmpty) 256 / table.length else 1
 
-    val index: Int = value.getValue/interval
-    if (index >= 0 && index < table.length) {
+  override def getSymbol(value: GreyScalePixel): Char = {
+    if (table.isEmpty || table.length > 256) ' '
+    else {
+      val index: Int = Math.min((value.getValue / interval).toInt, table.length - 1)
       table.charAt(index)
     }
-    else table.charAt(table.length - 1)
   }
 }

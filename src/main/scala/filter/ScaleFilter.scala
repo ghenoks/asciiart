@@ -20,16 +20,31 @@ class ScaleFilter(val scale: Float) extends ImageFilter[GreyScaleImage] {
 
     for (x <- 0 until height) {
       for (y <- 0 until width) {
-        val value = image.getPixel(x, y).getValue
-        pixels(x * 2)(y * 2) = GreyScalePixel(value)
-        pixels(x * 2 + 1)(y * 2) = GreyScalePixel(value)
-        pixels(x * 2)(y * 2 + 1) = GreyScalePixel(value)
-        pixels(x * 2 + 1)(y * 2 + 1) = GreyScalePixel(value)
+        image.getPixel(x, y) match {
+          case Right(pixel) =>
+            val value = pixel.getValue
+
+            GreyScalePixel(value) match {
+              case Right(pixel) =>
+                pixels(x * 2)(y * 2) = pixel
+                pixels(x * 2 + 1)(y * 2) = pixel
+                pixels(x * 2)(y * 2 + 1) = pixel
+                pixels(x * 2 + 1)(y * 2 + 1) = pixel
+              case Left(error) => throw IllegalArgumentException(error.message)
+            }
+          case Left(error) => throw IllegalArgumentException(error.message)
+        }
+
       }
     }
 
     val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(PixelArray[GreyScalePixel](vector))
+    val pixelArray = PixelArray[GreyScalePixel](vector)
+
+    pixelArray match {
+      case Right(arr) => GreyScaleImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
   }
 
   private def scale025(image: GreyScaleImage): GreyScaleImage = {
@@ -39,12 +54,25 @@ class ScaleFilter(val scale: Float) extends ImageFilter[GreyScaleImage] {
 
     for (x <- 0 until height/2) {
       for (y <- 0 until width/2) {
-        val value = image.getPixel(x * 2, y * 2).getValue
-        pixels (x)(y) = GreyScalePixel(value)
+        image.getPixel(x * 2, y * 2) match {
+          case Right(pixel) =>
+            val value = pixel.getValue
+
+            GreyScalePixel(value) match {
+              case Right(pixel) => pixels(x)(y) = pixel
+              case Left(error) => throw IllegalArgumentException(error.message)
+            }
+          case Left(error) => throw IllegalArgumentException(error.message)
+        }
       }
     }
 
     val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(PixelArray[GreyScalePixel](vector))
+    val pixelArray = PixelArray[GreyScalePixel](vector)
+
+    pixelArray match {
+      case Right(arr) => GreyScaleImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
   }
 }

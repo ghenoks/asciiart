@@ -1,5 +1,3 @@
 package models.Pixel
 
-trait Pixel {
-  
-}
+trait Pixel {}

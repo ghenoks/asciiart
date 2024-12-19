@@ -17,19 +17,32 @@ class RGBtoGreyScaleConverter extends GreyScaleConverter[RGBImage] {
     for (x <- 0 until height) {
       val pixelLine = ArrayBuffer[GreyScalePixel]()
       for (y <- 0 until width) {
-        val rgbPixel: RGBPixel = image.getPixel(x, y)
+        image.getPixel(x, y) match {
+          case Right(rgbPixel) =>
+            val red = rgbPixel.getRed
+            val green = rgbPixel.getGreen
+            val blue = rgbPixel.getBlue
 
-        val red = rgbPixel.getRed
-        val green = rgbPixel.getGreen
-        val blue = rgbPixel.getBlue
+            val value: Int = ((0.3 * red) + (0.59 * green) + (0.11 * blue)).toInt
+            GreyScalePixel(value) match {
+              case Right(pixel) => pixelLine.addOne(pixel)
+              case Left(error) => throw IllegalArgumentException(error.message)
+            }
+          case Left(error) => throw IllegalArgumentException(error.message)
+        }
 
-        val value: Int = ((0.3 * red) + (0.59 * green) + (0.11 * blue)).toInt
-        pixelLine.addOne(GreyScalePixel(value))
+
       }
       pixels.addOne(pixelLine)
     }
 
     val vector = pixels.map(_.toVector).toVector
-    GreyScaleImage(PixelArray[GreyScalePixel](vector))
+    val pixelArray = PixelArray[GreyScalePixel](vector)
+
+    pixelArray match {
+      case Right(arr) => GreyScaleImage(arr)
+      case Left(error) => throw IllegalArgumentException(error.message)
+    }
+
   }
 }
