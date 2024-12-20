@@ -4,6 +4,10 @@ import models.Image.RGBImage
 import models.Pixel.RGBPixel
 import models.{BusinessError, PixelArray}
 
+/*
+ * Image Loader used in testing
+ * Has no practical uses
+ */
 class TestImageLoader extends ImageLoader {
   override def load(): Either[BusinessError, RGBImage] = {
     val pixelCheck = RGBPixel(0, 0, 0)

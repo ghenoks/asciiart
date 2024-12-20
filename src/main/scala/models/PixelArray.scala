@@ -2,6 +2,12 @@ package models
 
 import models.Pixel.Pixel
 
+/*
+ * Represents the pixel container for Image
+ * getPixel returns pixel in position [x,y] or nothing if position is out of bounds
+ * @param pixels - represents the pixel array
+ * Returns BusinessError if pixelArray is not of shape rectangular
+ */
 class PixelArray[+T <: Pixel] private (private val pixels: Vector[Vector[T]]) {
 
   private val height: Int = pixels.length

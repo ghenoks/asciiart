@@ -4,6 +4,10 @@ import models.BusinessError
 
 import java.io.OutputStream
 
+/*
+ * Exports text into stream
+ * @param outputStream - stream to which text will be output
+ */
 class StreamTextExporter (outputStream: OutputStream) extends TextExporter {
   private var closed = false
 

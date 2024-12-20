@@ -6,7 +6,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class MixedImageFilterTest extends AnyFunSuite with GreyImageHelper {
   test("All filters succeed") {
-    val filters = List(new TestImageFilter, new TestImageFilter)
+    val filters = List(new GreyImageIdentityFilter, new GreyImageIdentityFilter)
     val mixedFilter = new MixedImageFilter(filters)
 
     val pixel1 = createGreyScalePixel(100)
@@ -29,7 +29,7 @@ class MixedImageFilterTest extends AnyFunSuite with GreyImageHelper {
   }
 
   test("One exporter fails") {
-    val filters = List(new TestImageFilter, new TestImageFilter2)
+    val filters = List(new GreyImageIdentityFilter, new FailImageFilter)
     val mixedFilter = new MixedImageFilter(filters)
 
     val pixel1 = createGreyScalePixel(100)

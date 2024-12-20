@@ -13,5 +13,5 @@ import ui.view.ConsoleView
 
   // komentare
   // testy done - models, exporters, filters, converters, visitor, view
-  // testy to do - loaders, handlers, argumentParser, ModuleGetter, controller, helpers/traits?
+  // testy to do - helpers/traits?
 }

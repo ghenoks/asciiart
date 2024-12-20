@@ -7,6 +7,9 @@ import models.Image.{GreyScaleImage, Image, RGBImage}
 import filter.ImageFilter
 import models.Pixel.GreyScalePixel
 
+/*
+ * Holds modules needed for successful asciiArt usage
+ */
 class ModuleHolder (loader: ImageLoader,
                     greyScaleConverter: GreyScaleConverter[RGBImage],
                     filter: ImageFilter[GreyScaleImage],

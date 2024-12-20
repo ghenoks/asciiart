@@ -4,6 +4,12 @@ import models.Image.visitor.ImageVisitor
 import models.Pixel.RGBPixel
 import models.{BusinessError, PixelArray}
 
+/*
+ * Represents an Image made out of pixels with RGB values
+ * Pixels are stored in pixelArray
+ * getPixel returns pixel in position [x,y] of pixelArray or BusinessError if its out of bounds
+ * accept accepts visitor
+ */
 case class RGBImage (pixelArray: PixelArray[RGBPixel]) extends Image {
   override def getPixel(x: Int, y: Int): Either[BusinessError, RGBPixel] = {
     pixelArray.getPixel(x, y) match {

@@ -4,6 +4,11 @@ import models.Image.{GreyScaleImage, RGBImage}
 import models.Pixel.GreyScalePixel
 import models.{BusinessError, PixelArray}
 
+/*
+ * RGB to GreyScale-Converter used for testing
+ * Doesn't have any real practical use
+ */
+
 class TestGreyScaleConverter extends GreyScaleConverter[RGBImage] {
   override def convert(image: RGBImage): Either[BusinessError, GreyScaleImage] = {
 

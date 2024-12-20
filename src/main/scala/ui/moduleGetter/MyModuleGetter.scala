@@ -13,8 +13,15 @@ import java.io.File
 import scala.collection.mutable.ListBuffer
 import scala.util.Try
 
+/*
+ * Used for getting the needed modules according to moduleList or BusinessError if an Argument is wrong
+ */
 class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHolder] {
 
+  /*
+   * gets all needed modules for asciiArt stored in ModuleHolder
+   * Returns BusinessError if it couldn't get a module
+   */
   override def getModules: Either[BusinessError, ModuleHolder] = {
     for {
       loader <- getLoader.left.map(error => BusinessError(error.message))
@@ -25,6 +32,10 @@ class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHold
     } yield new ModuleHolder(loader, greyScaleConverter, filter, asciiConverter, exporter)
   }
 
+  /*
+   * Looks for all Arguments with image or image-random name and returns the right one
+   * Returns BusinessError if multiple or no image or image-random argument was found
+   */
   private def getLoader: Either[BusinessError, ImageLoader] = {
     val imageCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "image" || arg.name == "image-random")
 
@@ -58,10 +69,19 @@ class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHold
     }
   }
 
+  /*
+   * Gets the right GreyScaleConverter
+   */
   private def getGreyScaleConverter: Either[BusinessError, GreyScaleConverter[RGBImage]] = {
     Right(RGBtoGreyScaleConverter())
   }
 
+  /*
+   * Gets filter module
+   * Returns Mixed Filter if multiple filters are needed
+   * Returns specific filter if only one is in Arguments
+   * Returns GreyImageIdentityFilter if no filter was specified
+   */
   private def getFilters: Either[BusinessError, ImageFilter[GreyScaleImage]] = {
     val imageFilters = ListBuffer[ImageFilter[GreyScaleImage]]()
     val filterCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "scale" || arg.name == "invert" || arg.name == "rotate" || arg.name == "brightness" || arg.name == "flip")
@@ -125,6 +145,11 @@ class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHold
     }
   }
 
+  /*
+   * gets ASCII-converter according to Arguments
+   * if there's multiple returns BusinessError
+   * If there's none specified then uses default
+   */
   private def getASCIIConverter: Either[BusinessError, ASCIIConverter[GreyScaleImage, GreyScalePixel]] = {
     val tableCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "table" || arg.name == "custom-table")
 
@@ -148,6 +173,10 @@ class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHold
     }
   }
 
+  /*
+   * Gets exporters according to arguments
+   * Returns BusinessError if none were specified
+   */
   private def getExporter: Either[BusinessError, Exporter[Image]] = {
     val imageExporters = ListBuffer[Exporter[Image]]()
     val exportCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "output-console" || arg.name == "output-file")

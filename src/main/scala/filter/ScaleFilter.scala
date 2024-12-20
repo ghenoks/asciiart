@@ -5,6 +5,10 @@ import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
 import models.BusinessError
 
+/*
+ * Scales the GreyScale-Image 4x, 1x or 0.25x of its original size
+ * Returns BusinessError if filter fails
+ */
 class ScaleFilter(val scale: Float) extends ImageFilter[GreyScaleImage] with GreyErrorFlagValidator {
   override def applyFilter(image: GreyScaleImage): Either[BusinessError, GreyScaleImage] = {
 
@@ -15,7 +19,10 @@ class ScaleFilter(val scale: Float) extends ImageFilter[GreyScaleImage] with Gre
       case _ => Left(BusinessError("Value for Scale Filter invalid"))
     }
   }
-
+  
+  /*
+   * Scales GreyScale-Image 4x
+   */
   private def scale4(image: GreyScaleImage): Either[BusinessError, GreyScaleImage] = {
 
     val height = image.getHeight
@@ -45,6 +52,9 @@ class ScaleFilter(val scale: Float) extends ImageFilter[GreyScaleImage] with Gre
     validateErrorFlag(pixels, errorFlag)
   }
 
+  /*
+   * Scales GreyScale-Image 0.25x
+   */
   private def scale025(image: GreyScaleImage): Either[BusinessError, GreyScaleImage] = {
 
     val height = image.getHeight

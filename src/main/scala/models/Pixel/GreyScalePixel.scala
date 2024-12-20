@@ -2,6 +2,11 @@ package models.Pixel
 
 import models.BusinessError
 
+/*
+ * Represents a pixel in GreyScale-Image
+ * Only holds grey color value representing its value
+ * If value is not between 0-255 returns BusinessError
+ */
 case class GreyScalePixel private (private val value: Int) extends Pixel {
   def getValue: Int = value
 }

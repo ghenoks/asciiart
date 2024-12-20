@@ -4,6 +4,12 @@ import models.Image.visitor.ImageVisitor
 import models.Pixel.Pixel
 import models.{BusinessError, PixelArray}
 
+/*
+ * Represents Images made out of Pixels
+ * pixelArray holds Pixels
+ * getPixel returns pixel in position [x, y] of pixel Array or BusinessError if its out of bounds
+ * accept accepts ImageVisitor
+ */
 trait Image {
 
   def pixelArray: PixelArray[Pixel]

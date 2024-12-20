@@ -7,7 +7,15 @@ import models.BusinessError
 
 import scala.collection.mutable.ArrayBuffer
 
+/*
+ * Converts RGB-Image to GreyScale-Image
+ * Returns BusinessError if conversion fails
+ */
 class RGBtoGreyScaleConverter extends GreyScaleConverter[RGBImage] with GreyErrorFlagValidator {
+
+  /*
+   * For each Pixel in RGBImage calculates GreyScale value and adds it to GreyScaleImage
+   */
   override def convert(image: RGBImage): Either[BusinessError, GreyScaleImage] = {
 
     val pixels = ArrayBuffer[ArrayBuffer[GreyScalePixel]]()
@@ -15,6 +23,7 @@ class RGBtoGreyScaleConverter extends GreyScaleConverter[RGBImage] with GreyErro
     val height: Int = image.getHeight
     val width: Int = image.getWidth
 
+    // used for detecting errors in loops
     var errorFlag: Option[String] = None
 
     for (x <- 0 until height if errorFlag.isEmpty) {

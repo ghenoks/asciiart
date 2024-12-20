@@ -2,6 +2,11 @@ package models.Pixel
 
 import models.BusinessError
 
+/*
+ * Represents a pixel in RGB-Image
+ * Only holds color values representing RGB values
+ * If any color value is not between 0-255 returns BusinessError
+ */
 case class RGBPixel private (private val red: Int, private val green: Int, private val blue: Int) extends Pixel {
   def getRed: Int = red
   def getGreen: Int = green

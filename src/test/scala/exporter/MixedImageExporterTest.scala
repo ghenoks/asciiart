@@ -8,7 +8,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class MixedImageExporterTest extends AnyFunSuite with ASCIIImageHelper {
 
-  test("All exporters succeed") {
+  test("All exporters succeeded") {
     val exporters = List(new TestImageExporter, new TestImageExporter)
     val mixedExporter = new MixedImageExporter(exporters)
 

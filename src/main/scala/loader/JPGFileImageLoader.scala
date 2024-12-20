@@ -2,7 +2,11 @@ package loader
 
 import models.BusinessError
 
-class JPGFileImageLoader (fileName: String) extends StdFileImageLoader(fileName) {
+/*
+ * Loads RGB-Image from .jpg files
+ * Returns BusinessError if file is not .jpg file
+ */
+class JPGFileImageLoader private (fileName: String) extends StdFileImageLoader(fileName) {
 
 }
 

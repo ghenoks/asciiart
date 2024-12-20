@@ -2,7 +2,7 @@ package models
 
 import converter.{ASCIIConverter, GreyScaleConverter, TestASCIIConverter, TestGreyScaleConverter}
 import exporter.{Exporter, TestImageExporter}
-import filter.{ImageFilter, TestImageFilter}
+import filter.{GreyImageIdentityFilter, ImageFilter}
 import loader.{ImageLoader, TestImageLoader}
 import models.Image.{GreyScaleImage, Image, RGBImage}
 import models.Pixel.GreyScalePixel
@@ -15,7 +15,7 @@ class ModuleHolderTest extends AnyFunSuite with MockitoSugar {
   // Create moduleHolder to test with Test Modules only used for testing
   val loader: ImageLoader = new TestImageLoader
   val greyScaleConverter: GreyScaleConverter[RGBImage] = new TestGreyScaleConverter
-  val filter: ImageFilter[GreyScaleImage] = new TestImageFilter
+  val filter: ImageFilter[GreyScaleImage] = new GreyImageIdentityFilter
   val asciiConverter: ASCIIConverter[GreyScaleImage, GreyScalePixel] = TestASCIIConverter(new PaulBourkeTable)
   val exporter: Exporter[Image] = new TestImageExporter
 

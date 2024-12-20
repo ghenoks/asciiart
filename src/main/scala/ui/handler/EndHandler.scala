@@ -1,8 +1,11 @@
 package ui.handler
 
 import models.BusinessError
-import ui.handler.Handler
 
+/*
+ * Represents end of chain of responsibility
+ * Always returns Unit -> Success
+ */
 object EndHandler extends Handler[Any] {
   override def handle(item: Any): Either[BusinessError, Unit] = {Right(())}
 }

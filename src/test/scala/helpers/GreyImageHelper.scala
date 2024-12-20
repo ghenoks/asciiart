@@ -4,6 +4,10 @@ import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
 import models.PixelArray
 
+/*
+ * Used to help with checking if GreyScale-Image and GreyScale-Pixel creation or getValue went without problem
+ * else throws exception
+ */
 trait GreyImageHelper {
   def createGreyScalePixel(value: Int): GreyScalePixel = {
     GreyScalePixel(value) match {

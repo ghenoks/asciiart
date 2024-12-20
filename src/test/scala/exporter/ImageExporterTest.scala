@@ -1,5 +1,6 @@
 package exporter
 
+import helpers.ASCIIImageHelper
 import models.{BusinessError, PixelArray}
 import models.Image.{ASCIIImage, Image}
 import models.Pixel.ASCIIPixel
@@ -7,16 +8,8 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
 import ui.visitor.ImageToStringVisitor
 
-class ImageExporterTest extends AnyFunSuite {
-
-  def createASCIIImage(pixels: Vector[Vector[ASCIIPixel]]): ASCIIImage = {
-    val pixelArray = PixelArray(pixels)
-    pixelArray match {
-      case Right(arr) => ASCIIImage(arr)
-      case Left(error) => throw new RuntimeException(s"Failed to create GreyScaleImage: ${error.message}")
-    }
-  }
-
+class ImageExporterTest extends AnyFunSuite with ASCIIImageHelper {
+  
   test("Image exported successfully") {
     val textExporter = new StdOutputExporter()
     val visitor = ImageToStringVisitor()

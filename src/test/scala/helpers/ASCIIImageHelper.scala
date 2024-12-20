@@ -4,6 +4,10 @@ import models.Image.ASCIIImage
 import models.Pixel.ASCIIPixel
 import models.PixelArray
 
+/*
+ * Used to help with checking if ASCII-Image creation or getValue went without problem
+ * else throws exception
+ */
 trait ASCIIImageHelper {
   def createASCIIImage(pixels: Vector[Vector[ASCIIPixel]]): ASCIIImage = {
     val pixelArray = PixelArray(pixels)

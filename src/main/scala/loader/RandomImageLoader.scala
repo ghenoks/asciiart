@@ -7,13 +7,18 @@ import models.BusinessError
 
 import scala.util.Random
 
+/*
+ * Generates random RGB-Image
+ * Size of Image is between 100x100 - 500x500
+ */
 class RandomImageLoader extends ImageLoader with RGBErrorFlagValidator {
   override def load(): Either[BusinessError, RGBImage]  = {
     val random = new Random()
 
     val width = random.between(100, 500)
     val height = random.between(100, 500)
-
+    
+    // used for detecting errors in loops 
     var errorFlag: Option[String] = None
 
     val pixels = Array.ofDim[RGBPixel](height, width)

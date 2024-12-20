@@ -8,14 +8,23 @@ import models.conversionTable.ConversionTable
 
 import scala.collection.mutable.ArrayBuffer
 
-case class GreyScaleToASCIIConverter(table: ConversionTable[GreyScalePixel]) extends ASCIIConverter[GreyScaleImage, GreyScalePixel] with ASCIIErrorFlagValidator {
+/*
+ * Converts GreyScaleImage to ASCII-Image
+ * Conversion Table maps values from GreyScale to ASCII symbols
+ */
+class GreyScaleToASCIIConverter(val table: ConversionTable[GreyScalePixel]) extends ASCIIConverter[GreyScaleImage, GreyScalePixel] with ASCIIErrorFlagValidator {
+  
+  /*
+   * For each Pixel in GreyScaleImage finds ASCII symbol and adds to ASCII-Image
+   */
   override def convert(image: GreyScaleImage): Either[BusinessError, ASCIIImage] = {
 
     val pixels = ArrayBuffer[ArrayBuffer[ASCIIPixel]]()
 
     val height: Int = image.getHeight
     val width: Int = image.getWidth
-
+    
+    // used for detecting errors in loops
     var errorFlag: Option[String] = None
 
     for (x <- 0 until height if errorFlag.isEmpty) {

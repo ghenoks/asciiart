@@ -5,7 +5,14 @@ import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
 import models.BusinessError
 
+/*
+ * Inverts the Grey color values of pixels in GreyScale-Image
+ * Returns BusinessError if it fails
+ */
 class InversionFilter extends ImageFilter[GreyScaleImage] with GreyErrorFlagValidator {
+  /*
+   * Calculates new value for each pixel in GreyScale-Image
+   */
   override def applyFilter(image: GreyScaleImage): Either[BusinessError, GreyScaleImage] = {
 
     val height = image.getHeight

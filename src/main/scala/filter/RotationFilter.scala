@@ -5,6 +5,10 @@ import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
 import models.BusinessError
 
+/*
+ * Rotates GreyScale-Image by degrees dividable by 90
+ * Returns BusinessError if filter fails
+ */
 class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] with GreyErrorFlagValidator {
   override def applyFilter(image: GreyScaleImage): Either[BusinessError, GreyScaleImage] = {
     degrees match {

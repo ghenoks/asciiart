@@ -4,6 +4,11 @@ import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
 import models.{BusinessError, PixelArray}
 
+/*
+ * Validates if errorFlag found error
+ * If not then returns GreyScale-Image
+ * If yes then it returns BusinessError
+ */
 trait GreyErrorFlagValidator extends ErrorFlagValidator[GreyScalePixel, GreyScaleImage] {
   override def validateErrorFlag(pixels: Array[Array[GreyScalePixel]], errorFlag: Option[String]): Either[BusinessError, GreyScaleImage] = {
     errorFlag match {

@@ -2,6 +2,10 @@ package models.conversionTable
 
 import models.Pixel.GreyScalePixel
 
+/*
+ * Conversion Table used to map values onto symbols from table
+ * Divides the numbers 0-99 to symbol(0) and from 100-255 equally into the rest of the symbols of table
+ */
 class NonLinearConversionTable(val table: String) extends ConversionTable[GreyScalePixel] {
 
   private def interval: Int = if (table.length > 1) (256 - 100) / (table.length - 1) else 1
