@@ -8,10 +8,10 @@ import models.BusinessError
 class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] with GreyErrorFlagValidator {
   override def applyFilter(image: GreyScaleImage): Either[BusinessError, GreyScaleImage] = {
     degrees match {
-      case 90 => rotate(image, (x, y, width, height) => (y, height - 1 - x))
-      case 180 => rotate(image, (x, y, width, height) => (height - 1 - x, width - 1 - y))
-      case 270 => rotate(image, (x, y, width, height) => (width - 1 - y, x))
-      case 0 => Right(image)
+      case 90 | -270 => rotate(image, (x, y, width, height) => (y, height - 1 - x))
+      case 180 | -180 => rotate(image, (x, y, width, height) => (height - 1 - x, width - 1 - y))
+      case 270 | -90 => rotate(image, (x, y, width, height) => (width - 1 - y, x))
+      case 0 | -360 | 360 => Right(image)
       case _ => Left(BusinessError(s"Unsupported rotation angle: $degrees"))
     }
   }
@@ -21,8 +21,8 @@ class RotationFilter(val degrees: Int) extends ImageFilter[GreyScaleImage] with 
     val width = image.getWidth
 
     val (newHeight, newWidth) = degrees match {
-      case 90 | 270 => (width, height)
-      case 180 => (height, width)
+      case 90 | 270 | -270 | -90 => (width, height)
+      case 180 | -180 => (height, width)
     }
 
     val pixels = Array.ofDim[GreyScalePixel](newHeight, newWidth)

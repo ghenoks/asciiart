@@ -67,7 +67,7 @@ class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHold
     val filterCommands: Seq[Argument] = moduleList.filter(arg => arg.name == "scale" || arg.name == "invert" || arg.name == "rotate" || arg.name == "brightness" || arg.name == "flip")
 
     if (filterCommands.isEmpty) {
-      return Right(GSImageIdentityFilter())
+      return Right(GreyImageIdentityFilter())
     }
 
     var error: Option[String] = None
@@ -119,9 +119,9 @@ class MyModuleGetter(moduleList: List[Argument]) extends ModuleGetter[ModuleHold
     error match {
       case Some(errMsg) => Left(BusinessError(errMsg))
       case None =>
-        if (imageFilters.isEmpty) Right(GSImageIdentityFilter())
+        if (imageFilters.isEmpty) Right(GreyImageIdentityFilter())
         else if (imageFilters.length == 1) Right(imageFilters.head)
-        else Right(MixedFilter(imageFilters.toList))
+        else Right(MixedImageFilter(imageFilters.toList))
     }
   }
 

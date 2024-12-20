@@ -17,7 +17,7 @@ class StreamTextExporter (outputStream: OutputStream) extends TextExporter {
     Right(())
   }
 
-  override def close(): Unit = {
+  def close(): Unit = {
     if (closed)
       return
 

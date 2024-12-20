@@ -3,7 +3,7 @@ package filter
 import models.BusinessError
 import models.Image.GreyScaleImage
 
-class MixedFilter (filters: List[ImageFilter[GreyScaleImage]]) extends ImageFilter[GreyScaleImage] {
+class MixedImageFilter(filters: List[ImageFilter[GreyScaleImage]]) extends ImageFilter[GreyScaleImage] {
   override def applyFilter(image: GreyScaleImage): Either[BusinessError, GreyScaleImage] = {
 
     var filteredImage: Either[BusinessError, GreyScaleImage] = Right(image)

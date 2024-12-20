@@ -10,8 +10,8 @@ import ui.view.ConsoleView
   val argParser = new MyArgumentParser(args.toList)
   val controller = new ConsoleController(argParser, view)
   controller.run()
-  
-  // zkontrolovat vsechny moduly pracuji spravne
+
   // komentare
-  // testy
+  // testy done - models, exporters, filters, converters, visitor, view
+  // testy to do - loaders, handlers, argumentParser, ModuleGetter, controller, helpers/traits?
 }

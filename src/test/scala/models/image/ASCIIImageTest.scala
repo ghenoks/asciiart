@@ -1,21 +1,14 @@
 package models.image
 
+import helpers.ASCIIImageHelper
 import models.Image.ASCIIImage
 import models.Pixel.ASCIIPixel
 import models.{BusinessError, PixelArray}
 import org.scalatest.funsuite.AnyFunSuite
 import ui.visitor.TestVisitor
 
-class ASCIIImageTest extends AnyFunSuite {
-
-  def createASCIIImage(pixels: Vector[Vector[ASCIIPixel]]): ASCIIImage = {
-    val pixelArray = PixelArray(pixels)
-    pixelArray match {
-      case Right(arr) => ASCIIImage(arr)
-      case Left(error) => throw new RuntimeException(s"Failed to create GreyScaleImage: ${error.message}")
-    }
-  }
-
+class ASCIIImageTest extends AnyFunSuite with ASCIIImageHelper {
+  
   test("ASCIIImage should retrieve the correct pixel when within bounds") {
 
     val pixels = Vector(Vector(ASCIIPixel('x'), ASCIIPixel('y'), ASCIIPixel('z')))

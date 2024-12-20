@@ -1,27 +1,14 @@
 package models.image
 
+import helpers.GreyImageHelper
 import models.Image.GreyScaleImage
 import models.Pixel.GreyScalePixel
 import models.{BusinessError, PixelArray}
 import org.scalatest.funsuite.AnyFunSuite
 import ui.visitor.TestVisitor
 
-class GreyScaleImageTest extends AnyFunSuite {
-  def createGreyScalePixel(value: Int): GreyScalePixel = {
-    GreyScalePixel(value) match {
-      case Right(pixel) => pixel
-      case Left(error) => throw new RuntimeException(s"Failed to create GreyScalePixel: ${error.message}")
-    }
-  }
-
-  def createGreyScaleImage(pixels: Vector[Vector[GreyScalePixel]]): GreyScaleImage = {
-    val pixelArray = PixelArray(pixels)
-    pixelArray match {
-      case Right(arr) => GreyScaleImage(arr)
-      case Left(error) => throw new RuntimeException(s"Failed to create GreyScaleImage: ${error.message}")
-    }
-  }
-
+class GreyScaleImageTest extends AnyFunSuite with GreyImageHelper {
+  
   test("GreyScaleImage should retrieve the correct pixel when within bounds") {
 
     val pixel1 = createGreyScalePixel(0)

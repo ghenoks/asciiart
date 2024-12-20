@@ -1,32 +1,12 @@
 package converter
 
+import helpers.{GreyImageHelper, RGBImageHelper}
 import models.Image.{GreyScaleImage, RGBImage}
 import models.Pixel.{GreyScalePixel, RGBPixel}
 import models.PixelArray
 import org.scalatest.funsuite.AnyFunSuite
 
-class RGBToGreyScaleConverterTest extends AnyFunSuite {
-  def createRGBPixel(red: Int, green: Int, blue: Int): RGBPixel = {
-    RGBPixel(red, green, blue) match {
-      case Right(pixel) => pixel
-      case Left(error) => throw new RuntimeException(s"Failed to create RGBPixel: ${error.message}")
-    }
-  }
-
-  def createRGBImage(pixels: Vector[Vector[RGBPixel]]): RGBImage = {
-    val pixelArray = PixelArray(pixels)
-    pixelArray match {
-      case Right(arr) => RGBImage(arr)
-      case Left(error) => throw new RuntimeException(s"Failed to create RGBImage: ${error.message}")
-    }
-  }
-
-  def getGreyValue(image: GreyScaleImage, x: Int, y: Int): Int = {
-    image.getPixel(x, y) match {
-      case Right(pixel) => pixel.getValue
-      case Left(error) => throw new RuntimeException(s"Failed to get GreyScale value: ${error.message}")
-    }
-  }
+class RGBToGreyScaleConverterTest extends AnyFunSuite with RGBImageHelper with GreyImageHelper {
 
   test("Converting RGBImage to GreyScaleImage") {
     val converter = RGBtoGreyScaleConverter()

@@ -1,5 +1,6 @@
 package models.image
 
+import helpers.RGBImageHelper
 import models.Image.RGBImage
 import models.Image.visitor.ImageVisitor
 import models.Pixel.RGBPixel
@@ -7,22 +8,7 @@ import models.{BusinessError, PixelArray}
 import org.scalatest.funsuite.AnyFunSuite
 import ui.visitor.TestVisitor
 
-class RGBImageTest extends AnyFunSuite {
-
-  def createRGBPixel(red: Int, green: Int, blue: Int): RGBPixel = {
-    RGBPixel(red, green, blue) match {
-      case Right(pixel) => pixel
-      case Left(error) => throw new RuntimeException(s"Failed to create RGBPixel: ${error.message}")
-    }
-  }
-
-  def createRGBImage(pixels: Vector[Vector[RGBPixel]]): RGBImage = {
-    val pixelArray = PixelArray(pixels)
-    pixelArray match {
-      case Right(arr) => RGBImage(arr)
-      case Left(error) => throw new RuntimeException(s"Failed to create RGBImage: ${error.message}")
-    }
-  }
+class RGBImageTest extends AnyFunSuite with RGBImageHelper {
 
   test("RGBImage should retrieve the correct pixel when within bounds") {
     val pixel1 = createRGBPixel(0, 0, 0)

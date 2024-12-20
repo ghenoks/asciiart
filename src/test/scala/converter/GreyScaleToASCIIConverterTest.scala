@@ -1,34 +1,13 @@
 package converter
 
+import helpers.{ASCIIImageHelper, GreyImageHelper}
 import models.Image.{ASCIIImage, GreyScaleImage}
 import models.Pixel.GreyScalePixel
 import models.{BusinessError, PixelArray}
 import models.conversionTable.PaulBourkeTable
 import org.scalatest.funsuite.AnyFunSuite
 
-class GreyScaleToASCIIConverterTest extends AnyFunSuite {
-
-  def createGreyScalePixel(value: Int): GreyScalePixel = {
-    GreyScalePixel(value) match {
-      case Right(pixel) => pixel
-      case Left(error) => throw new RuntimeException(s"Failed to create GreyScalePixel: ${error.message}")
-    }
-  }
-
-  def createGreyScaleImage(pixels: Vector[Vector[GreyScalePixel]]): GreyScaleImage = {
-    val pixelArray = PixelArray(pixels)
-    pixelArray match {
-      case Right(arr) => GreyScaleImage(arr)
-      case Left(error) => throw new RuntimeException(s"Failed to create GreyScaleImage: ${error.message}")
-    }
-  }
-
-  def getASCIIValue (image: ASCIIImage, x: Int, y: Int): Char = {
-    image.getPixel(x, y) match {
-      case Right(pixel) => pixel.getValue
-      case Left(error) => throw new RuntimeException(s"Failed to get ASCIIImage value: ${error.message}")
-    }
-  }
+class GreyScaleToASCIIConverterTest extends AnyFunSuite with GreyImageHelper with ASCIIImageHelper {
 
   test("Converting GreyScaleImage to correct ASCIIImage") {
     val converter = GreyScaleToASCIIConverter(PaulBourkeTable())

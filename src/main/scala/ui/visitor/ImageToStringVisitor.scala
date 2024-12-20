@@ -31,6 +31,6 @@ class ImageToStringVisitor extends ImageVisitor[String] {
   }
 
   override def visitGreyScaleImage(image: GreyScaleImage): String = {
-    "Rendering to string not supported for RGBImage."
+    "Rendering to string not supported for GreyScaleImage."
   }
 }
