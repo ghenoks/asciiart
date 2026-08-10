@@ -10,8 +10,6 @@ import ui.view.ConsoleView
   val argParser = new MyArgumentParser(args.toList)
   val controller = new ConsoleController(argParser, view)
   controller.run()
-
-  // komentare
-  // testy done - models, exporters, filters, converters, visitor, view
-  // testy to do - helpers/traits?
 }
+
+//run --image "src/main/scala/resources/pikachu.jpg" --rotate +90 --scale 0.25 --invert --output-console
