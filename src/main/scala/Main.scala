@@ -2,7 +2,7 @@ package Main
 
 import ui.argumentParser.MyArgumentParser
 import ui.controller.ConsoleController
-import ui.view.ConsoleView
+import ui.view.ConsoleView 
 
 @main def main (args: String*): Unit = {
 
